@@ -1,4 +1,3 @@
-import React from "react";
 import { Container, Typography, TextField } from "@mui/material";
 import { QrReader } from "react-qr-reader";
 
