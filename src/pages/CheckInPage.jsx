@@ -37,8 +37,11 @@ const CheckInPage = ({ showScanner, showSearch }) => {
             height: "100%",
             zIndex: 10,
           }}
-          videoContainerStyle={{ height: "100vh", paddingTop: "0px" }}
-          videoStyle={{ height: "100vh" }}
+          videoContainerStyle={{
+            // height: "100vh",
+            paddingTop: "0px",
+          }}
+          videoStyle={{ height: "100vh", position: "unset" }}
         />
       )}
 
@@ -54,23 +57,13 @@ const CheckInPage = ({ showScanner, showSearch }) => {
 
       {/* Feedback display */}
       {scannedData && (
-        <Typography
-          variant="h6"
-          color="primary"
-          align="center"
-          style={{ marginTop: "20px" }}
-        >
+        <Typography variant="h6" color="primary" align="center">
           Scanned Data: {scannedData}
         </Typography>
       )}
 
       {error && (
-        <Typography
-          variant="h6"
-          color="error"
-          align="center"
-          style={{ marginTop: "20px" }}
-        >
+        <Typography variant="h6" color="error" align="center">
           {error}
         </Typography>
       )}
