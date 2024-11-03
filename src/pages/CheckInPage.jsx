@@ -8,7 +8,13 @@ const CheckInPage = ({ showScanner, showSearch }) => {
 
   return (
     <Container
-      style={{ padding: 0, margin: 0, width: "100%", height: "100vh" }}
+      sx={{
+        padding: "0px !important",
+        margin: "0px !important",
+        width: "100%",
+        height: "100vh",
+        maxWidth: "unset !important",
+      }}
     >
       {showScanner && (
         <QrReader
@@ -27,8 +33,8 @@ const CheckInPage = ({ showScanner, showSearch }) => {
             position: "fixed",
             top: 0,
             left: 0,
-            width: "100%",
-            height: "100%",
+            width: "100vw",
+            height: "100vh",
             zIndex: 10,
           }}
         />
