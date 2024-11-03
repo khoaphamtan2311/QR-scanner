@@ -41,7 +41,7 @@ const CheckInPage = ({ showScanner, showSearch }) => {
             // height: "100vh",
             paddingTop: "0px",
           }}
-          videoStyle={{ height: "100vh", position: "unset" }}
+          videoStyle={{ height: "100vh" }}
         />
       )}
 
