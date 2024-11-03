@@ -37,7 +37,7 @@ const CheckInPage = ({ showScanner, showSearch }) => {
             height: "100%",
             zIndex: 10,
           }}
-          videoContainerStyle={{ height: "100vh" }}
+          videoContainerStyle={{ height: "100vh", paddingTop: "0px" }}
           videoStyle={{ height: "100vh" }}
         />
       )}
