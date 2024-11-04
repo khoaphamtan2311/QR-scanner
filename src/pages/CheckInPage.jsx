@@ -7,6 +7,8 @@ import {
   DialogContent,
   DialogTitle,
   Button,
+  TextField,
+  Box,
 } from "@mui/material";
 import { QrReader } from "react-qr-reader";
 import { handleCheckIn, storeQRData } from "../service/service";
@@ -16,6 +18,8 @@ function CheckInPage({ showScanner, showSearch }) {
   const [error, setError] = useState(null);
   const [dialogOpen, setDialogOpen] = useState(false);
   const [statusMessage, setStatusMessage] = useState("");
+  const [studentId, setStudentId] = useState("");
+  const [errorData, setErrorData] = useState(null); // State for fetched data on error
 
   const handleScanResult = async (result) => {
     if (result) {
@@ -40,12 +44,24 @@ function CheckInPage({ showScanner, showSearch }) {
 
   const handleCheckInClick = async () => {
     try {
-      const response = await handleCheckIn(scannedData);
+      // Use `studentId` for manual check-in, or `scannedData` if available
+      const idToCheckIn = studentId || scannedData;
+      if (!idToCheckIn) {
+        setStatusMessage("No valid ID for check-in.");
+        return;
+      }
+
+      const response = await handleCheckIn(idToCheckIn);
       setStatusMessage(response);
       setDialogOpen(false); // Close the dialog after check-in
+      setStudentId(""); // Clear the student ID field after check-in
     } catch (err) {
       setStatusMessage(err.message);
     }
+  };
+
+  const handleInputChange = (e) => {
+    setStudentId(e.target.value);
   };
 
   // const handleCheckOutClick = async () => {
@@ -103,6 +119,28 @@ function CheckInPage({ showScanner, showSearch }) {
         />
       )}
 
+      {showSearch && (
+        <div>
+          <Typography variant="h6">Search by Student ID</Typography>
+          <TextField
+            label="Student ID"
+            variant="outlined"
+            value={studentId}
+            onChange={handleInputChange}
+            fullWidth
+            margin="normal"
+          />
+          <Button
+            variant="contained"
+            color="primary"
+            onClick={handleCheckInClick}
+            sx={{ marginTop: 2 }}
+          >
+            Check-In with ID
+          </Button>
+        </div>
+      )}
+
       {error && (
         <Typography
           variant="h6"
@@ -112,9 +150,32 @@ function CheckInPage({ showScanner, showSearch }) {
             top: "50%",
             left: "50%",
             transform: "translate(-50%, -50%)",
+            zIndex: 2,
+            backgroundColor: "rgba(255, 255, 255, 0.5)",
+            padding: "10px",
+            borderRadius: "8px",
           }}
         >
           {error}
+        </Typography>
+      )}
+
+      {errorData && (
+        <Typography
+          variant="body2"
+          color="textSecondary"
+          sx={{
+            position: "absolute",
+            top: "60%",
+            left: "50%",
+            transform: "translate(-50%, -50%)",
+            textAlign: "center",
+            maxWidth: "80%",
+          }}
+        >
+          {typeof errorData === "string"
+            ? errorData
+            : JSON.stringify(errorData)}
         </Typography>
       )}
 
