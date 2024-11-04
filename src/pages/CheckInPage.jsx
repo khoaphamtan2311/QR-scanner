@@ -52,18 +52,19 @@ function QRScannerComponent() {
             position: "absolute",
             top: 0,
             left: 0,
-            width: "100%",
-            height: "100%",
+            width: "100vw",
+            height: "100vh",
             zIndex: 1,
           }}
           videoContainerStyle={{
-            width: "100%",
-            height: "100%",
+            width: "100vw",
+            height: "100vh",
+            paddingTop: "0px",
           }}
           videoStyle={{
             objectFit: "cover",
-            width: "100%",
-            height: "100%",
+            width: "100vw",
+            height: "100vh",
           }}
         />
       )}
