@@ -46,6 +46,9 @@ function CheckInPage({ showScanner, showSearch }) {
 
   const handleCheckInClick = async () => {
     const idToCheckIn = studentId || scannedData;
+    if (studentId != "") {
+      setDialogOpen(true);
+    }
     if (!idToCheckIn) {
       setStatusMessage("Please provide a valid ID.");
       return;

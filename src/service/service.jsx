@@ -3,7 +3,7 @@ import database from "../../firebaseConfig";
 
 // Function to store scanned QR code data
 export const storeQRData = async (id) => {
-  const qrRef = ref(database, `attendance/${id}`);
+  const qrRef = ref(database, `/${id}`);
   const snapshot = await get(qrRef);
 
   if (snapshot.exists()) {
