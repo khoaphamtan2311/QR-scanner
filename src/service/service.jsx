@@ -1,4 +1,4 @@
-import { ref, update, get, child } from "firebase/database";
+import { ref, update, get, child, set } from "firebase/database";
 import database from "../../firebaseConfig";
 
 // Function to store scanned QR code data
@@ -18,16 +18,54 @@ export const storeQRData = async (id) => {
   }
 };
 
+export const checkInUserByID = async (id, qrCode = "") => {
+  try {
+    const attendanceRef = ref(database, "attendance");
+    const snapshot = await get(attendanceRef);
+
+    if (snapshot.exists()) {
+      const attendanceData = snapshot.val();
+
+      // Find the matching entry
+      let updated = false;
+      Object.keys(attendanceData).forEach((key) => {
+        const record = attendanceData[key];
+        if (record["Mã số đại biểu"] === id) {
+          // Update the check-in status and QR code used
+          attendanceData[key].checkedIn = true;
+          attendanceData[key].qrCode = qrCode;
+          updated = true;
+        }
+      });
+
+      if (updated) {
+        // Push the updated attendance data back to Firebase
+        await set(attendanceRef, attendanceData);
+        return "Check-in successful!";
+      } else {
+        return "ID not found in the database.";
+      }
+    } else {
+      return "No data available.";
+    }
+  } catch (error) {
+    console.error("Error during check-in:", error);
+    return "Failed to check in. Please try again.";
+  }
+};
+
 // Function to handle check-in
 export const handleCheckIn = async (id) => {
   const dbRef = ref(database, `attendance/${id}`);
   const snapshot = await get(dbRef);
 
+  console.log(snapshot);
+
   if (snapshot.exists()) {
     // Update the `checkIn` field to true
-    await update(dbRef, {
-      checkIn: true,
-    });
+    // await update(dbRef, {
+    //   checkIn: true,
+    // });
     return "Check-in successful.";
   } else {
     throw new Error("Record not found.");

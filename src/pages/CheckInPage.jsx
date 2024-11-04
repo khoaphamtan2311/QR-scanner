@@ -8,10 +8,13 @@ import {
   DialogTitle,
   Button,
   TextField,
-  Box,
 } from "@mui/material";
 import { QrReader } from "react-qr-reader";
-import { handleCheckIn, storeQRData } from "../service/service";
+import {
+  checkInUserByID,
+  // handleCheckIn,
+  storeQRData,
+} from "../service/service";
 
 function CheckInPage({ showScanner, showSearch }) {
   const [scannedData, setScannedData] = useState(null);
@@ -19,7 +22,6 @@ function CheckInPage({ showScanner, showSearch }) {
   const [dialogOpen, setDialogOpen] = useState(false);
   const [statusMessage, setStatusMessage] = useState("");
   const [studentId, setStudentId] = useState("");
-  const [errorData, setErrorData] = useState(null); // State for fetched data on error
 
   const handleScanResult = async (result) => {
     if (result) {
@@ -43,21 +45,33 @@ function CheckInPage({ showScanner, showSearch }) {
   };
 
   const handleCheckInClick = async () => {
-    try {
-      // Use `studentId` for manual check-in, or `scannedData` if available
-      const idToCheckIn = studentId || scannedData;
-      if (!idToCheckIn) {
-        setStatusMessage("No valid ID for check-in.");
-        return;
-      }
+    // try {
+    //   // Use `studentId` for manual check-in, or `scannedData` if available
+    //   const idToCheckIn = studentId || scannedData;
+    //   if (!idToCheckIn) {
+    //     setStatusMessage("No valid ID for check-in.");
+    //     return;
+    //   }
 
-      const response = await handleCheckIn(idToCheckIn);
-      setStatusMessage(response);
-      setDialogOpen(false); // Close the dialog after check-in
-      setStudentId(""); // Clear the student ID field after check-in
-    } catch (err) {
-      setStatusMessage(err.message);
+    //   const response = await handleCheckIn(idToCheckIn);
+    //   setStatusMessage(response);
+    //   setDialogOpen(false); // Close the dialog after check-in
+    //   setStudentId(""); // Clear the student ID field after check-in
+    // } catch (err) {
+    //   setStatusMessage(err.message);
+    // }
+    const idToCheckIn = studentId || scannedData;
+    if (!idToCheckIn) {
+      setStatusMessage("Please provide a valid ID.");
+      return;
     }
+
+    // Call the check-in function
+    const responseMessage = await checkInUserByID(
+      idToCheckIn,
+      scannedData || ""
+    );
+    setStatusMessage(responseMessage);
   };
 
   const handleInputChange = (e) => {
@@ -157,25 +171,6 @@ function CheckInPage({ showScanner, showSearch }) {
           }}
         >
           {error}
-        </Typography>
-      )}
-
-      {errorData && (
-        <Typography
-          variant="body2"
-          color="textSecondary"
-          sx={{
-            position: "absolute",
-            top: "60%",
-            left: "50%",
-            transform: "translate(-50%, -50%)",
-            textAlign: "center",
-            maxWidth: "80%",
-          }}
-        >
-          {typeof errorData === "string"
-            ? errorData
-            : JSON.stringify(errorData)}
         </Typography>
       )}
 
