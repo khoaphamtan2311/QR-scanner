@@ -9,18 +9,54 @@ import {
   Button,
 } from "@mui/material";
 import { QrReader } from "react-qr-reader";
+import { handleCheckIn, storeQRData } from "../service/service";
 
-function QRScannerComponent() {
-  const [showScanner, setShowScanner] = useState(true);
+function CheckInPage({ showScanner, showSearch }) {
   const [scannedData, setScannedData] = useState(null);
   const [error, setError] = useState(null);
   const [dialogOpen, setDialogOpen] = useState(false);
+  const [statusMessage, setStatusMessage] = useState("");
 
-  const handleApiCall = () => {
-    // Replace this with your API call logic
-    console.log("Calling API with scanned data:", scannedData);
-    setDialogOpen(false);
+  const handleScanResult = async (result) => {
+    if (result) {
+      const id = result?.text;
+      setScannedData(id);
+      setDialogOpen(true);
+
+      try {
+        // Store the scanned QR code in the database
+        await storeQRData(id);
+      } catch (err) {
+        console.error(err);
+        setStatusMessage("Failed to store QR data.");
+      }
+    }
   };
+
+  const handleError = (error) => {
+    console.error(error);
+    setError("Scanning failed. Please try again.");
+  };
+
+  const handleCheckInClick = async () => {
+    try {
+      const response = await handleCheckIn(scannedData);
+      setStatusMessage(response);
+      setDialogOpen(false); // Close the dialog after check-in
+    } catch (err) {
+      setStatusMessage(err.message);
+    }
+  };
+
+  // const handleCheckOutClick = async () => {
+  //   try {
+  //     const response = await handleCheckOut(scannedData);
+  //     setStatusMessage(response);
+  //     setDialogOpen(false); // Close the dialog after check-out
+  //   } catch (err) {
+  //     setStatusMessage(err.message);
+  //   }
+  // };
 
   return (
     <Container
@@ -38,13 +74,11 @@ function QRScannerComponent() {
         <QrReader
           onResult={(result, error) => {
             if (result) {
-              setScannedData(result?.text);
-              setError(null);
-              setDialogOpen(true); // Open dialog on success
+              handleScanResult(result);
+              setError(null); // Open the dialog when a scan is successful
             }
             if (error) {
-              console.error(error);
-              setError("Scanning failed. Please try again.");
+              handleError(error);
             }
           }}
           constraints={{ facingMode: "environment" }}
@@ -69,7 +103,6 @@ function QRScannerComponent() {
         />
       )}
 
-      {/* Centered error message */}
       {error && (
         <Typography
           variant="h6"
@@ -79,28 +112,31 @@ function QRScannerComponent() {
             top: "50%",
             left: "50%",
             transform: "translate(-50%, -50%)",
-            zIndex: 2,
-            backgroundColor: "rgba(255, 255, 255, 0.5)",
-            padding: "10px",
-            borderRadius: "8px",
           }}
         >
           {error}
         </Typography>
       )}
 
-      {/* Dialog for scanned data */}
+      {/* Dialog to show scanned data and confirm */}
       <Dialog open={dialogOpen} onClose={() => setDialogOpen(false)}>
         <DialogTitle>Scanned Data</DialogTitle>
         <DialogContent>
-          <Typography variant="body1">Data: {scannedData}</Typography>
+          <Typography variant="body1">ID: {scannedData}</Typography>
+          {statusMessage && (
+            <Typography variant="body2" color="green">
+              {statusMessage}
+            </Typography>
+          )}
         </DialogContent>
         <DialogActions>
-          <Button onClick={handleApiCall} color="primary" variant="contained">
-            Check Attendance
-          </Button>
-          <Button onClick={() => setDialogOpen(false)} color="secondary">
-            Close
+          <Button onClick={() => setDialogOpen(false)}>Cancel</Button>
+          <Button
+            onClick={handleCheckInClick}
+            color="primary"
+            variant="contained"
+          >
+            Confirm Attendance
           </Button>
         </DialogActions>
       </Dialog>
@@ -108,4 +144,4 @@ function QRScannerComponent() {
   );
 }
 
-export default QRScannerComponent;
+export default CheckInPage;

@@ -3,6 +3,7 @@ import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import Layout from "./component/Layout";
 import LandingPage from "./pages/LandingPage";
 import CheckInPage from "./pages/CheckInPage";
+import FileUpload from "./component/Loader";
 // import CheckoutPage from "./pages/CheckoutPage";
 
 function App() {
@@ -44,6 +45,10 @@ function App() {
         //   element: <CheckoutPage />,
         // },
       ],
+    },
+    {
+      path: "/private",
+      element: <FileUpload />,
     },
   ]);
 
