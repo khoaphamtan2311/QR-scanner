@@ -10,11 +10,7 @@ import {
   TextField,
 } from "@mui/material";
 import { QrReader } from "react-qr-reader";
-import {
-  checkInUserByID,
-  // handleCheckIn,
-  storeQRData,
-} from "../service/service";
+import { checkOutUserByID } from "../service/service";
 
 function CheckOutPage({ showScanner, showSearch }) {
   const [scannedData, setScannedData] = useState(null);
@@ -28,14 +24,6 @@ function CheckOutPage({ showScanner, showSearch }) {
       const id = result?.text;
       setScannedData(id);
       setDialogOpen(true);
-
-      try {
-        // Store the scanned QR code in the database
-        await storeQRData(id);
-      } catch (err) {
-        console.error(err);
-        setStatusMessage("Failed to store QR data.");
-      }
     }
   };
 
@@ -44,16 +32,15 @@ function CheckOutPage({ showScanner, showSearch }) {
     setError("Scanning failed. Please try again.");
   };
 
-  const handleCheckInClick = async () => {
-    const idToCheckIn = studentId || scannedData;
-    if (!idToCheckIn) {
+  const handleCheckOutClick = async () => {
+    const idToCheckOut = studentId || scannedData;
+    if (!idToCheckOut) {
       setStatusMessage("Please provide a valid ID.");
       return;
     }
 
-    // Call the check-in function
-    const responseMessage = await checkInUserByID(
-      idToCheckIn,
+    const responseMessage = await checkOutUserByID(
+      idToCheckOut,
       scannedData || ""
     );
     setStatusMessage(responseMessage);
@@ -80,7 +67,7 @@ function CheckOutPage({ showScanner, showSearch }) {
           onResult={(result, error) => {
             if (result) {
               handleScanResult(result);
-              setError(null); // Open the dialog when a scan is successful
+              setError(null);
             }
             if (error) {
               handleError(error);
@@ -122,10 +109,10 @@ function CheckOutPage({ showScanner, showSearch }) {
           <Button
             variant="contained"
             color="primary"
-            onClick={handleCheckInClick}
+            onClick={handleCheckOutClick}
             sx={{ marginTop: 2 }}
           >
-            Check-In with ID
+            Check-Out with ID
           </Button>
         </div>
       )}
@@ -163,11 +150,11 @@ function CheckOutPage({ showScanner, showSearch }) {
         <DialogActions>
           <Button onClick={() => setDialogOpen(false)}>Cancel</Button>
           <Button
-            onClick={handleCheckInClick}
+            onClick={handleCheckOutClick}
             color="primary"
             variant="contained"
           >
-            Confirm Attendance
+            Confirm Checkout
           </Button>
         </DialogActions>
       </Dialog>

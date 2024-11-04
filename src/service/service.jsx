@@ -53,6 +53,38 @@ export const checkInUserByID = async (id, qrCode = "") => {
   }
 };
 
+export const checkOutUserByID = async (id, qrCode = "") => {
+  try {
+    const attendanceRef = ref(database, "/");
+    const snapshot = await get(attendanceRef);
+
+    if (snapshot.exists()) {
+      const attendanceData = snapshot.val();
+      let updated = false;
+      Object.keys(attendanceData).forEach((key) => {
+        const record = attendanceData[key];
+        if (record["AttendanceID"] === id) {
+          attendanceData[key].checkedOut = true;
+          attendanceData[key].qrCode = qrCode;
+          updated = true;
+        }
+      });
+
+      if (updated) {
+        await set(attendanceRef, attendanceData);
+        return "Check-out successful!";
+      } else {
+        return "ID not found in the database.";
+      }
+    } else {
+      return "No data available.";
+    }
+  } catch (error) {
+    console.error("Error during check-out:", error);
+    return "Failed to check out. Please try again.";
+  }
+};
+
 // Function to handle check-in
 export const handleCheckIn = async (id) => {
   const dbRef = ref(database, `attendance/${id}`);

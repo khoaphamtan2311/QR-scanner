@@ -29,13 +29,13 @@ function CheckOutPage({ showScanner, showSearch }) {
       setScannedData(id);
       setDialogOpen(true);
 
-      try {
-        // Store the scanned QR code in the database
-        await storeQRData(id);
-      } catch (err) {
-        console.error(err);
-        setStatusMessage("Failed to store QR data.");
-      }
+      // try {
+      //   // Store the scanned QR code in the database
+      //   await storeQRData(id);
+      // } catch (err) {
+      //   console.error(err);
+      //   setStatusMessage("Failed to store QR data.");
+      // }
     }
   };
 

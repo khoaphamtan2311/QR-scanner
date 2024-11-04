@@ -13,7 +13,7 @@ import { QrReader } from "react-qr-reader";
 import {
   checkInUserByID,
   // handleCheckIn,
-  storeQRData,
+  // storeQRData,
 } from "../service/service";
 
 function CheckInPage({ showScanner, showSearch }) {
@@ -29,13 +29,16 @@ function CheckInPage({ showScanner, showSearch }) {
       setScannedData(id);
       setDialogOpen(true);
 
-      try {
-        // Store the scanned QR code in the database
-        await storeQRData(id);
-      } catch (err) {
-        console.error(err);
-        setStatusMessage("Failed to store QR data.");
-      }
+      // try {
+      //   // Store the scanned QR code in the database
+      //   await storeQRData(id);
+      // } catch (err) {
+      //   console.error(err);
+      //   setStatusMessage("Failed to store QR data.");
+      //   setTimeout(() => {
+      //     setStatusMessage("");
+      //   }, 3000);
+      // }
     }
   };
 
@@ -47,6 +50,7 @@ function CheckInPage({ showScanner, showSearch }) {
   const handleCheckInClick = async () => {
     const idToCheckIn = studentId || scannedData;
     if (studentId != "") {
+      setScannedData(studentId);
       setDialogOpen(true);
     }
     if (!idToCheckIn) {
