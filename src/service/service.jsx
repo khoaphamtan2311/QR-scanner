@@ -1,5 +1,5 @@
 import { ref, update, get, child } from "firebase/database";
-import database from "./firebaseConfig";
+import database from "../../firebaseConfig";
 
 // Function to store scanned QR code data
 export const storeQRData = async (id) => {
