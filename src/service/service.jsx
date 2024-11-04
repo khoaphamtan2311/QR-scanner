@@ -20,17 +20,16 @@ export const storeQRData = async (id) => {
 
 export const checkInUserByID = async (id, qrCode = "") => {
   try {
-    const attendanceRef = ref(database, "attendance");
+    const attendanceRef = ref(database, "/");
     const snapshot = await get(attendanceRef);
 
     if (snapshot.exists()) {
       const attendanceData = snapshot.val();
-
       // Find the matching entry
       let updated = false;
       Object.keys(attendanceData).forEach((key) => {
         const record = attendanceData[key];
-        if (record["Mã số đại biểu"] === id) {
+        if (record["AttendanceID"] === id) {
           // Update the check-in status and QR code used
           attendanceData[key].checkedIn = true;
           attendanceData[key].qrCode = qrCode;

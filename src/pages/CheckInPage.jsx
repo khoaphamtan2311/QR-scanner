@@ -45,21 +45,6 @@ function CheckInPage({ showScanner, showSearch }) {
   };
 
   const handleCheckInClick = async () => {
-    // try {
-    //   // Use `studentId` for manual check-in, or `scannedData` if available
-    //   const idToCheckIn = studentId || scannedData;
-    //   if (!idToCheckIn) {
-    //     setStatusMessage("No valid ID for check-in.");
-    //     return;
-    //   }
-
-    //   const response = await handleCheckIn(idToCheckIn);
-    //   setStatusMessage(response);
-    //   setDialogOpen(false); // Close the dialog after check-in
-    //   setStudentId(""); // Clear the student ID field after check-in
-    // } catch (err) {
-    //   setStatusMessage(err.message);
-    // }
     const idToCheckIn = studentId || scannedData;
     if (!idToCheckIn) {
       setStatusMessage("Please provide a valid ID.");
@@ -77,16 +62,6 @@ function CheckInPage({ showScanner, showSearch }) {
   const handleInputChange = (e) => {
     setStudentId(e.target.value);
   };
-
-  // const handleCheckOutClick = async () => {
-  //   try {
-  //     const response = await handleCheckOut(scannedData);
-  //     setStatusMessage(response);
-  //     setDialogOpen(false); // Close the dialog after check-out
-  //   } catch (err) {
-  //     setStatusMessage(err.message);
-  //   }
-  // };
 
   return (
     <Container

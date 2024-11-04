@@ -4,7 +4,7 @@ import Layout from "./component/Layout";
 import LandingPage from "./pages/LandingPage";
 import CheckInPage from "./pages/CheckInPage";
 import FileUpload from "./component/Loader";
-// import CheckoutPage from "./pages/CheckoutPage";
+import CheckoutPage from "./pages/CheckoutPage";
 
 function App() {
   const [showScanner, setShowScanner] = useState(false);
@@ -40,10 +40,12 @@ function App() {
             <CheckInPage showScanner={showScanner} showSearch={showSearch} />
           ),
         },
-        // {
-        //   path: "check-out",
-        //   element: <CheckoutPage />,
-        // },
+        {
+          path: "check-out",
+          element: (
+            <CheckoutPage showScanner={showScanner} showSearch={showSearch} />
+          ),
+        },
       ],
     },
     {
