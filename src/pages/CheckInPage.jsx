@@ -111,12 +111,37 @@ function CheckInPage({ showScanner, showSearch }) {
             onChange={handleInputChange}
             fullWidth
             margin="normal"
+            sx={{
+              "& .MuiOutlinedInput-root": {
+                "& fieldset": {
+                  borderColor: "#fff", // Default border color
+                },
+                "&:hover fieldset": {
+                  borderColor: "#fff", // Border color on hover
+                },
+                "&.Mui-focused fieldset": {
+                  borderWidth: "2px", // Increase border width on focus
+                  borderImage:
+                    "linear-gradient(-225deg, #ea6426 0%, #f1881b 100%) 1", // Gradient border on focus
+                },
+              },
+              "& .MuiInputLabel-root": {
+                color: "#fff", // Label color
+              },
+              "& .MuiInputLabel-root.Mui-focused": {
+                color: "#fff", // Label color on focus
+              },
+            }}
           />
           <Button
             variant="contained"
-            color="primary"
             onClick={handleCheckInClick}
-            sx={{ marginTop: 2 }}
+            sx={{
+              marginTop: 2,
+              backgroundColor: "transparent",
+              backgroundImage:
+                "linear-gradient(-225deg, #ea6426 0%, #f1881b 100%)",
+            }}
           >
             Check-In with ID
           </Button>

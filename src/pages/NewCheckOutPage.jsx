@@ -93,8 +93,8 @@ function CheckOutPage({ showScanner, showSearch }) {
       )}
 
       {showSearch && (
-        <div>
-          <Typography variant="h6">Search by Student ID</Typography>
+        <div style={{ padding: "auto 30px" }}>
+          <Typography variant="h6">Search by ID</Typography>
           <TextField
             label="Student ID"
             variant="outlined"
@@ -102,12 +102,37 @@ function CheckOutPage({ showScanner, showSearch }) {
             onChange={handleInputChange}
             fullWidth
             margin="normal"
+            sx={{
+              "& .MuiOutlinedInput-root": {
+                "& fieldset": {
+                  borderColor: "#fff", // Default border color
+                },
+                "&:hover fieldset": {
+                  borderColor: "#fff", // Border color on hover
+                },
+                "&.Mui-focused fieldset": {
+                  borderWidth: "2px", // Increase border width on focus
+                  borderImage:
+                    "linear-gradient(-225deg, #41c1ed 0%, #6fc7e9 100%) 1", // Gradient border on focus
+                },
+              },
+              "& .MuiInputLabel-root": {
+                color: "#fff", // Label color
+              },
+              "& .MuiInputLabel-root.Mui-focused": {
+                color: "#fff", // Label color on focus
+              },
+            }}
           />
           <Button
             variant="contained"
             color="primary"
             onClick={handleCheckOutClick}
-            sx={{ marginTop: 2 }}
+            sx={{
+              marginTop: 2,
+              backgroundImage:
+                "linear-gradient(-225deg, #41c1ed 0%, #6fc7e9 100%)",
+            }}
           >
             Check-Out with ID
           </Button>
