@@ -112,7 +112,14 @@ function CheckOutPage({ showScanner, showSearch }) {
       )}
 
       {showSearch && (
-        <div style={{ padding: "auto 30px" }}>
+        <div
+          style={{
+            display: "flex",
+            flexDirection: "column",
+            justifyContent: "center",
+            height: "100%",
+          }}
+        >
           <Typography variant="h6">Search by ID</Typography>
           <TextField
             label="Attendance ID"
@@ -127,6 +134,8 @@ function CheckOutPage({ showScanner, showSearch }) {
               },
             }}
             sx={{
+              width: "80%",
+              margin: "16px auto 8px",
               "& .MuiOutlinedInput-root": {
                 "& fieldset": {
                   borderColor: isDarkTheme ? "#fff" : "#000", // Default border color
@@ -153,7 +162,8 @@ function CheckOutPage({ showScanner, showSearch }) {
             color="primary"
             onClick={handleSubmit}
             sx={{
-              marginTop: 2,
+              width: "80%",
+              margin: "0 auto",
               backgroundImage:
                 "linear-gradient(-225deg, #41c1ed 0%, #6fc7e9 100%)",
             }}

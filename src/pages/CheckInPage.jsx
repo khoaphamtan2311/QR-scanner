@@ -121,7 +121,14 @@ function CheckInPage({ showScanner, showSearch }) {
       )}
 
       {showSearch && (
-        <div>
+        <div
+          style={{
+            display: "flex",
+            flexDirection: "column",
+            justifyContent: "center",
+            height: "100%",
+          }}
+        >
           <Typography variant="h6">Search by ID</Typography>
           <TextField
             label="Attendance ID"
@@ -136,6 +143,8 @@ function CheckInPage({ showScanner, showSearch }) {
               },
             }}
             sx={{
+              width: "80%",
+              margin: "16px auto 8px",
               "& .MuiOutlinedInput-root": {
                 "& fieldset": {
                   borderColor: isDarkTheme ? "#fff" : "#000", // Default border color
@@ -161,7 +170,8 @@ function CheckInPage({ showScanner, showSearch }) {
             variant="contained"
             onClick={handleSubmit}
             sx={{
-              marginTop: 2,
+              width: "80%",
+              margin: "0 auto",
               backgroundColor: "transparent",
               backgroundImage:
                 "linear-gradient(-225deg, #ea6426 0%, #f1881b 100%)",
