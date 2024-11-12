@@ -11,6 +11,7 @@ import {
 } from "@mui/material";
 import { QrReader } from "react-qr-reader";
 import { checkOutUserByID } from "../service/service";
+import { useTheme } from "@mui/material/styles";
 
 function CheckOutPage({ showScanner, showSearch }) {
   const [scannedData, setScannedData] = useState(null);
@@ -19,6 +20,9 @@ function CheckOutPage({ showScanner, showSearch }) {
   const [statusMessage, setStatusMessage] = useState("");
   const [studentId, setStudentId] = useState("");
   const [textDialogOpen, setTextDialogOpen] = useState(false);
+
+  const theme = useTheme();
+  const isDarkTheme = theme.palette.mode === "dark";
 
   const handleScanResult = async (result) => {
     if (result) {
@@ -111,7 +115,7 @@ function CheckOutPage({ showScanner, showSearch }) {
         <div style={{ padding: "auto 30px" }}>
           <Typography variant="h6">Search by ID</Typography>
           <TextField
-            label="Student ID"
+            label="Attendance ID"
             variant="outlined"
             value={studentId}
             onChange={handleInputChange}
@@ -119,16 +123,16 @@ function CheckOutPage({ showScanner, showSearch }) {
             margin="normal"
             InputProps={{
               style: {
-                color: "#fff", // Set input text color to white
+                color: isDarkTheme ? "#fff" : "#000", // Set input text color based on theme
               },
             }}
             sx={{
               "& .MuiOutlinedInput-root": {
                 "& fieldset": {
-                  borderColor: "#fff", // Default border color
+                  borderColor: isDarkTheme ? "#fff" : "#000", // Default border color
                 },
                 "&:hover fieldset": {
-                  borderColor: "#fff", // Border color on hover
+                  borderColor: isDarkTheme ? "#fff" : "#000", // Border color on hover
                 },
                 "&.Mui-focused fieldset": {
                   borderWidth: "2px", // Increase border width on focus
@@ -137,10 +141,10 @@ function CheckOutPage({ showScanner, showSearch }) {
                 },
               },
               "& .MuiInputLabel-root": {
-                color: "#fff", // Label color
+                color: isDarkTheme ? "#fff" : "#000", // Label color based on theme
               },
               "& .MuiInputLabel-root.Mui-focused": {
-                color: "#fff", // Label color on focus
+                color: isDarkTheme ? "#fff" : "#000", // Label color on focus
               },
             }}
           />
@@ -159,7 +163,7 @@ function CheckOutPage({ showScanner, showSearch }) {
         </div>
       )}
 
-      {error && (
+      {error && !showSearch && (
         <Typography
           variant="h6"
           color="error"

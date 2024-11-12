@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import {
   Container,
   Typography,
@@ -15,6 +15,7 @@ import {
   // handleCheckIn,
   // storeQRData,
 } from "../service/service";
+import { useTheme } from "@mui/material/styles";
 
 function CheckInPage({ showScanner, showSearch }) {
   const [scannedData, setScannedData] = useState(null);
@@ -23,6 +24,9 @@ function CheckInPage({ showScanner, showSearch }) {
   const [textDialogOpen, setTextDialogOpen] = useState(false);
   const [statusMessage, setStatusMessage] = useState("");
   const [studentId, setStudentId] = useState("");
+
+  const theme = useTheme();
+  const isDarkTheme = theme.palette.mode === "dark";
 
   const handleScanResult = async (result) => {
     if (result) {
@@ -33,7 +37,7 @@ function CheckInPage({ showScanner, showSearch }) {
   };
 
   const handleError = (error) => {
-    console.error(error);
+    console.log(error);
     setError("Scanning failed. Please try again.");
   };
 
@@ -120,7 +124,7 @@ function CheckInPage({ showScanner, showSearch }) {
         <div>
           <Typography variant="h6">Search by ID</Typography>
           <TextField
-            label="Student ID"
+            label="Attendance ID"
             variant="outlined"
             value={studentId}
             onChange={handleInputChange}
@@ -128,28 +132,28 @@ function CheckInPage({ showScanner, showSearch }) {
             margin="normal"
             InputProps={{
               style: {
-                color: "#fff", // Set input text color to white
+                color: isDarkTheme ? "#fff" : "#000", // Set input text color based on theme
               },
             }}
             sx={{
               "& .MuiOutlinedInput-root": {
                 "& fieldset": {
-                  borderColor: "#fff", // Default border color
+                  borderColor: isDarkTheme ? "#fff" : "#000", // Default border color
                 },
                 "&:hover fieldset": {
-                  borderColor: "#fff", // Border color on hover
+                  borderColor: isDarkTheme ? "#fff" : "#000", // Border color on hover
                 },
                 "&.Mui-focused fieldset": {
                   borderWidth: "2px", // Increase border width on focus
                   borderImage:
-                    "linear-gradient(-225deg, #ea6426 0%, #f1881b 100%) 1", // Gradient border on focus
+                    "linear-gradient(-225deg, #41c1ed 0%, #6fc7e9 100%) 1", // Gradient border on focus
                 },
               },
               "& .MuiInputLabel-root": {
-                color: "#fff", // Label color
+                color: isDarkTheme ? "#fff" : "#000", // Label color based on theme
               },
               "& .MuiInputLabel-root.Mui-focused": {
-                color: "#fff", // Label color on focus
+                color: isDarkTheme ? "#fff" : "#000", // Label color on focus
               },
             }}
           />

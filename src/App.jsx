@@ -8,7 +8,7 @@ import CheckOutPage from "./pages/NewCheckOutPage";
 import "./App.css";
 
 function App() {
-  const [showScanner, setShowScanner] = useState(false);
+  const [showScanner, setShowScanner] = useState(true);
   const [showSearch, setShowSearch] = useState(false);
 
   const handleScannerActivate = () => {
