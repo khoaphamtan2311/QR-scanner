@@ -5,6 +5,7 @@ import LandingPage from "./pages/LandingPage";
 import CheckInPage from "./pages/CheckInPage";
 import FileUpload from "./component/Loader";
 import CheckOutPage from "./pages/NewCheckOutPage";
+import "./App.css";
 
 function App() {
   const [showScanner, setShowScanner] = useState(false);
@@ -23,6 +24,10 @@ function App() {
   const router = createBrowserRouter([
     {
       path: "/",
+      element: <LandingPage />,
+    },
+    {
+      path: "/",
       element: (
         <Layout
           onScannerActivate={handleScannerActivate}
@@ -30,10 +35,6 @@ function App() {
         />
       ),
       children: [
-        {
-          path: "/",
-          element: <LandingPage />,
-        },
         {
           path: "check-in",
           element: (

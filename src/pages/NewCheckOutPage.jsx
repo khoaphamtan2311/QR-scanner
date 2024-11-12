@@ -39,10 +39,7 @@ function CheckOutPage({ showScanner, showSearch }) {
       return;
     }
 
-    const responseMessage = await checkOutUserByID(
-      idToCheckOut,
-      scannedData || ""
-    );
+    const responseMessage = await checkOutUserByID(idToCheckOut);
     setStatusMessage(responseMessage);
   };
 

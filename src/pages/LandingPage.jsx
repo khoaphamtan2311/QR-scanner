@@ -1,9 +1,13 @@
 import { useState, useEffect } from "react";
 import { ref, onValue } from "firebase/database";
 import database from "../../firebaseConfig";
+import bg from "../assets/kp.png";
+import { Box } from "@mui/material";
+import "./LandingPage.css";
 
 const LandingPage = () => {
   const [totalCheckIns, setTotalCheckIns] = useState(0);
+  const [isUpdated, setIsUpdated] = useState(false);
 
   useEffect(() => {
     const attendanceRef = ref(database, "/");
@@ -17,6 +21,7 @@ const LandingPage = () => {
           (record) => record.checkedIn
         ).length;
         setTotalCheckIns(checkInCount);
+        setIsUpdated(true);
       } else {
         setTotalCheckIns(0);
       }
@@ -26,11 +31,23 @@ const LandingPage = () => {
     return () => unsubscribe();
   }, []);
 
+  useEffect(() => {
+    if (isUpdated) {
+      const timeout = setTimeout(() => setIsUpdated(false), 500); // Adjust duration as needed
+      return () => clearTimeout(timeout);
+    }
+  }, [isUpdated]);
+
   return (
-    <div>
-      <h1>Landing Page</h1>
-      <p>Total Check-Ins: {totalCheckIns}</p>
-    </div>
+    <Box sx={{ position: "relative", display: "inline-block" }}>
+      <img src={bg} alt="bg" style={{ display: "block" }} />
+      <Box
+        // className="layered-text teko-normal"
+        className="animate-charcter teko-normal"
+      >
+        {totalCheckIns}
+      </Box>
+    </Box>
   );
 };
 

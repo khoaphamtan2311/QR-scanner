@@ -18,7 +18,7 @@ export const storeQRData = async (id) => {
   }
 };
 
-export const checkInUserByID = async (id, qrCode = "") => {
+export const checkInUserByID = async (id) => {
   try {
     const attendanceRef = ref(database, "/");
     const snapshot = await get(attendanceRef);
@@ -32,7 +32,6 @@ export const checkInUserByID = async (id, qrCode = "") => {
         if (record["AttendanceID"] === id) {
           // Update the check-in status and QR code used
           attendanceData[key].checkedIn = true;
-          attendanceData[key].qrCode = qrCode;
           updated = true;
         }
       });
@@ -53,7 +52,7 @@ export const checkInUserByID = async (id, qrCode = "") => {
   }
 };
 
-export const checkOutUserByID = async (id, qrCode = "") => {
+export const checkOutUserByID = async (id) => {
   try {
     const attendanceRef = ref(database, "/");
     const snapshot = await get(attendanceRef);
@@ -65,7 +64,6 @@ export const checkOutUserByID = async (id, qrCode = "") => {
         const record = attendanceData[key];
         if (record["AttendanceID"] === id) {
           attendanceData[key].checkedOut = true;
-          attendanceData[key].qrCode = qrCode;
           updated = true;
         }
       });

@@ -13,7 +13,7 @@ import { QrReader } from "react-qr-reader";
 import {
   checkInUserByID,
   // handleCheckIn,
-  storeQRData,
+  // storeQRData,
 } from "../service/service";
 
 function CheckOutPage({ showScanner, showSearch }) {
@@ -110,7 +110,7 @@ function CheckOutPage({ showScanner, showSearch }) {
 
       {showSearch && (
         <div>
-          <Typography variant="h6">Search by Student ID</Typography>
+          <Typography variant="h6">Search by ID</Typography>
           <TextField
             label="Student ID"
             variant="outlined"

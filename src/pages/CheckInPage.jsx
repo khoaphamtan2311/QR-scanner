@@ -28,17 +28,6 @@ function CheckInPage({ showScanner, showSearch }) {
       const id = result?.text;
       setScannedData(id);
       setDialogOpen(true);
-
-      // try {
-      //   // Store the scanned QR code in the database
-      //   await storeQRData(id);
-      // } catch (err) {
-      //   console.error(err);
-      //   setStatusMessage("Failed to store QR data.");
-      //   setTimeout(() => {
-      //     setStatusMessage("");
-      //   }, 3000);
-      // }
     }
   };
 
@@ -59,10 +48,7 @@ function CheckInPage({ showScanner, showSearch }) {
     }
 
     // Call the check-in function
-    const responseMessage = await checkInUserByID(
-      idToCheckIn,
-      scannedData || ""
-    );
+    const responseMessage = await checkInUserByID(idToCheckIn);
     setStatusMessage(responseMessage);
   };
 
@@ -117,7 +103,7 @@ function CheckInPage({ showScanner, showSearch }) {
 
       {showSearch && (
         <div>
-          <Typography variant="h6">Search by Student ID</Typography>
+          <Typography variant="h6">Search by ID</Typography>
           <TextField
             label="Student ID"
             variant="outlined"
@@ -137,7 +123,7 @@ function CheckInPage({ showScanner, showSearch }) {
         </div>
       )}
 
-      {error && (
+      {error && !showSearch && (
         <Typography
           variant="h6"
           color="error"

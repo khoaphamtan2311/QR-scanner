@@ -17,16 +17,28 @@ const Layout = ({ onScannerActivate, onSearchActivate }) => {
     <div style={{ position: "relative", minHeight: "100vh" }}>
       {/* Floating Action Buttons */}
       <Fab
-        color="primary"
         onClick={onScannerActivate}
-        style={{ position: "fixed", bottom: 80, right: 20 }}
+        style={{
+          position: "fixed",
+          bottom: 80,
+          right: 20,
+          backgroundImage: "linear-gradient(-225deg, #ea6426 0%, #f1881b 100%)",
+          boxShadow: "1px 1px 0 #f1881b, 2px 2px 0 #fff",
+          color: "#fff",
+        }}
       >
         <CameraAlt />
       </Fab>
       <Fab
-        color="secondary"
         onClick={onSearchActivate}
-        style={{ position: "fixed", bottom: 150, right: 20 }}
+        style={{
+          position: "fixed",
+          bottom: 150,
+          right: 20,
+          color: "#fff",
+          backgroundImage: "linear-gradient(-225deg, #41c1ed 0%, #6fc7e9 100%)",
+          boxShadow: " 2px 2px 0 #fff",
+        }}
       >
         <Search />
       </Fab>
@@ -42,16 +54,17 @@ const Layout = ({ onScannerActivate, onSearchActivate }) => {
         onChange={handleNavigationChange}
         style={{ position: "fixed", bottom: 0, width: "100%" }}
       >
-        <BottomNavigationAction label="Landing" value="/" icon={<Home />} />
         <BottomNavigationAction
-          label="Check-In"
-          value="/check-in"
-          icon={<CameraAlt />}
+          value="/"
+          icon={<Home sx={{ color: "rgba(231, 54, 20, 1)" }} />}
         />
         <BottomNavigationAction
-          label="Check-Out"
+          value="/check-in"
+          icon={<CameraAlt sx={{ color: "rgba(231, 54, 20, 1)" }} />}
+        />
+        <BottomNavigationAction
           value="/check-out"
-          icon={<ExitToApp />}
+          icon={<ExitToApp sx={{ color: "rgba(231, 54, 20, 1)" }} />}
         />
       </BottomNavigation>
     </div>
