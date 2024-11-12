@@ -20,6 +20,7 @@ function CheckInPage({ showScanner, showSearch }) {
   const [scannedData, setScannedData] = useState(null);
   const [error, setError] = useState(null);
   const [dialogOpen, setDialogOpen] = useState(false);
+  const [textDialogOpen, setTextDialogOpen] = useState(false);
   const [statusMessage, setStatusMessage] = useState("");
   const [studentId, setStudentId] = useState("");
 
@@ -34,6 +35,20 @@ function CheckInPage({ showScanner, showSearch }) {
   const handleError = (error) => {
     console.error(error);
     setError("Scanning failed. Please try again.");
+  };
+
+  const handleSubmit = async () => {
+    const idToCheckIn = studentId || scannedData;
+    if (studentId != "") {
+      setScannedData(studentId);
+      setTextDialogOpen(true);
+    }
+    if (!idToCheckIn) {
+      setStatusMessage("Please provide a valid ID.");
+      return;
+    }
+    const responseMessage = await checkInUserByID(idToCheckIn);
+    setStatusMessage(responseMessage);
   };
 
   const handleCheckInClick = async () => {
@@ -111,6 +126,11 @@ function CheckInPage({ showScanner, showSearch }) {
             onChange={handleInputChange}
             fullWidth
             margin="normal"
+            InputProps={{
+              style: {
+                color: "#fff", // Set input text color to white
+              },
+            }}
             sx={{
               "& .MuiOutlinedInput-root": {
                 "& fieldset": {
@@ -135,7 +155,7 @@ function CheckInPage({ showScanner, showSearch }) {
           />
           <Button
             variant="contained"
-            onClick={handleCheckInClick}
+            onClick={handleSubmit}
             sx={{
               marginTop: 2,
               backgroundColor: "transparent",
@@ -187,6 +207,27 @@ function CheckInPage({ showScanner, showSearch }) {
           >
             Confirm Attendance
           </Button>
+        </DialogActions>
+      </Dialog>
+
+      <Dialog
+        open={textDialogOpen}
+        PaperProps={{
+          sx: { minWidth: "400px" },
+        }}
+        onClose={() => setTextDialogOpen(false)}
+      >
+        <DialogTitle>Search for ID</DialogTitle>
+        <DialogContent>
+          <Typography variant="body1">ID: {scannedData}</Typography>
+          {statusMessage && (
+            <Typography variant="body2" color="green">
+              {statusMessage}
+            </Typography>
+          )}
+        </DialogContent>
+        <DialogActions>
+          <Button onClick={() => setTextDialogOpen(false)}>Close</Button>
         </DialogActions>
       </Dialog>
     </Container>

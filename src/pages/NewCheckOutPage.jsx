@@ -18,6 +18,7 @@ function CheckOutPage({ showScanner, showSearch }) {
   const [dialogOpen, setDialogOpen] = useState(false);
   const [statusMessage, setStatusMessage] = useState("");
   const [studentId, setStudentId] = useState("");
+  const [textDialogOpen, setTextDialogOpen] = useState(false);
 
   const handleScanResult = async (result) => {
     if (result) {
@@ -30,6 +31,20 @@ function CheckOutPage({ showScanner, showSearch }) {
   const handleError = (error) => {
     console.error(error);
     setError("Scanning failed. Please try again.");
+  };
+
+  const handleSubmit = async () => {
+    const idToCheckIn = studentId || scannedData;
+    if (studentId != "") {
+      setScannedData(studentId);
+      setTextDialogOpen(true);
+    }
+    if (!idToCheckIn) {
+      setStatusMessage("Please provide a valid ID.");
+      return;
+    }
+    const responseMessage = await checkOutUserByID(idToCheckIn);
+    setStatusMessage(responseMessage);
   };
 
   const handleCheckOutClick = async () => {
@@ -102,6 +117,11 @@ function CheckOutPage({ showScanner, showSearch }) {
             onChange={handleInputChange}
             fullWidth
             margin="normal"
+            InputProps={{
+              style: {
+                color: "#fff", // Set input text color to white
+              },
+            }}
             sx={{
               "& .MuiOutlinedInput-root": {
                 "& fieldset": {
@@ -127,7 +147,7 @@ function CheckOutPage({ showScanner, showSearch }) {
           <Button
             variant="contained"
             color="primary"
-            onClick={handleCheckOutClick}
+            onClick={handleSubmit}
             sx={{
               marginTop: 2,
               backgroundImage:
@@ -178,6 +198,26 @@ function CheckOutPage({ showScanner, showSearch }) {
           >
             Confirm Checkout
           </Button>
+        </DialogActions>
+      </Dialog>
+      <Dialog
+        open={textDialogOpen}
+        PaperProps={{
+          sx: { minWidth: "400px" },
+        }}
+        onClose={() => setTextDialogOpen(false)}
+      >
+        <DialogTitle>Search for ID</DialogTitle>
+        <DialogContent>
+          <Typography variant="body1">ID: {scannedData}</Typography>
+          {statusMessage && (
+            <Typography variant="body2" color="green">
+              {statusMessage}
+            </Typography>
+          )}
+        </DialogContent>
+        <DialogActions>
+          <Button onClick={() => setTextDialogOpen(false)}>Close</Button>
         </DialogActions>
       </Dialog>
     </Container>

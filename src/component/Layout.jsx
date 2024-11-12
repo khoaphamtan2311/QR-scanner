@@ -53,18 +53,58 @@ const Layout = ({ onScannerActivate, onSearchActivate }) => {
         value={value}
         onChange={handleNavigationChange}
         style={{ position: "fixed", bottom: 0, width: "100%" }}
+        sx={{
+          "& .Mui-selected": {
+            backgroundImage:
+              "linear-gradient(-225deg, #ea6426 0%, #f1881b 100%)", // Active background color
+            color: "#fff", // Active icon color
+            borderTopLeftRadius: "12px",
+            borderTopRightRadius: "12px",
+            marginTop: "-12px",
+            "& .MuiSvgIcon-root": {
+              color: "#fff", // Set icon to white when active
+            },
+          },
+        }}
       >
         <BottomNavigationAction
           value="/"
-          icon={<Home sx={{ color: "rgba(231, 54, 20, 1)" }} />}
+          icon={<Home />}
+          sx={{
+            "& .MuiSvgIcon-root": {
+              color: value === "/" ? "#fff" : "rgba(231, 54, 20, 1)",
+            },
+            "&:focus": {
+              outline: "none",
+              boxShadow: "none",
+            },
+          }}
         />
         <BottomNavigationAction
           value="/check-in"
-          icon={<CameraAlt sx={{ color: "rgba(231, 54, 20, 1)" }} />}
+          icon={<CameraAlt />}
+          sx={{
+            "& .MuiSvgIcon-root": {
+              color: value === "/check-in" ? "#fff" : "rgba(231, 54, 20, 1)",
+            },
+            "&:focus": {
+              outline: "none",
+              boxShadow: "none",
+            },
+          }}
         />
         <BottomNavigationAction
           value="/check-out"
-          icon={<ExitToApp sx={{ color: "rgba(231, 54, 20, 1)" }} />}
+          icon={<ExitToApp />}
+          sx={{
+            "& .MuiSvgIcon-root": {
+              color: value === "/check-out" ? "#fff" : "rgba(231, 54, 20, 1)",
+            },
+            "&:focus": {
+              outline: "none",
+              boxShadow: "none",
+            },
+          }}
         />
       </BottomNavigation>
     </div>
