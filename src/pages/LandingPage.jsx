@@ -77,21 +77,24 @@ const LandingPage = () => {
         {/* Row with Đương nhiên and Chỉ định */}
         <Box className="pair-row">
           <Typography className="text-color oswald-normal">
-            Đương nhiên:{" "}
+            Đại biểu đương nhiên:{" "}
             <span className="animated-value">{duongNhienCount}</span>
           </Typography>
           <Typography className="text-color  oswald-normal">
-            Chỉ định: <span className="animated-value">{chiDinhCount}</span>
+            Đại biểu chỉ định:{" "}
+            <span className="animated-value">{chiDinhCount}</span>
           </Typography>
         </Box>
 
         {/* Row with Chính thức and Dự khuyết */}
         <Box className="pair-row">
           <Typography className="text-color oswald-normal">
-            Chính thức: <span className="animated-value">{chinhThucCount}</span>
+            Đại biểu bầu chọn từ cơ sở:{" "}
+            <span className="animated-value">{chinhThucCount}</span>
           </Typography>
           <Typography className="text-color oswald-normal">
-            Dự khuyết: <span className="animated-value">{duKhuyetCount}</span>
+            Đại biểu dự khuyết dự thay:{" "}
+            <span className="animated-value">{duKhuyetCount}</span>
           </Typography>
         </Box>
       </Box>

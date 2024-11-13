@@ -37,12 +37,13 @@
 }
 
 .right-info {
+  max-width: 50vw;
   text-transform: uppercase;
   display: flex;
   flex-direction: column;
   position: absolute;
   top: 50%;
-  right: 15%;
+  right: 10%;
   transform: translateY(-50%);
   color: #fff;
   font-size: 1.5vw;
@@ -52,7 +53,9 @@
 .pair-row {
   display: flex;
   justify-content: space-between;
-  gap: 2em; /* Adjust gap between pairs */
+  max-width: 50vw;
+  gap: 2em;
+  /* Adjust gap between pairs */
 }
 
 .right-info p,
@@ -67,13 +70,14 @@
 .right-info .MuiTypography-root::before {
   content: attr(data-label);
   display: inline-block;
-  min-width: 120px; /* Fixed width for consistency */
+  /* min-width: 120px;  */
+  /* Fixed width for consistency */
 }
 
 .text-color {
   display: flex;
   align-items: center;
-  font-size: 30px !important;
+  font-size: 27px !important;
   letter-spacing: 0.01em !important;
   text-shadow: 1px 1px 0 #f1881b, /* First shadow layer */ 3px 3px 0 #fff; /* Second shadow layer */
   color: #e54325;
