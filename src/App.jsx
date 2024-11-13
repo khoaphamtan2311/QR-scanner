@@ -6,6 +6,7 @@ import CheckInPage from "./pages/CheckInPage";
 import FileUpload from "./component/Loader";
 import CheckOutPage from "./pages/NewCheckOutPage";
 import "./App.css";
+import AdminPage from "./pages/AdminPage";
 
 function App() {
   const [showScanner, setShowScanner] = useState(true);
@@ -25,6 +26,10 @@ function App() {
     {
       path: "/",
       element: <LandingPage />,
+    },
+    {
+      path: "/private",
+      element: <AdminPage />,
     },
     {
       path: "/",

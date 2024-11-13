@@ -1,4 +1,4 @@
-import { ref, update, get, child, set } from "firebase/database";
+import { ref, update, get, child, set, onValue } from "firebase/database";
 import database from "../../firebaseConfig";
 
 // Function to store scanned QR code data
@@ -29,7 +29,7 @@ export const checkInUserByID = async (id) => {
       let updated = false;
       Object.keys(attendanceData).forEach((key) => {
         const record = attendanceData[key];
-        if (record["AttendanceID"] === id) {
+        if (record["MSCB_MSSV"].toString() === id.toString()) {
           // Update the check-in status and QR code used
           attendanceData[key].checkedIn = true;
           updated = true;
@@ -62,7 +62,7 @@ export const checkOutUserByID = async (id) => {
       let updated = false;
       Object.keys(attendanceData).forEach((key) => {
         const record = attendanceData[key];
-        if (record["AttendanceID"] === id) {
+        if (record["MSCB_MSSV"].toString() === id.toString()) {
           attendanceData[key].checkedOut = true;
           updated = true;
         }
@@ -83,40 +83,6 @@ export const checkOutUserByID = async (id) => {
   }
 };
 
-// Function to handle check-in
-export const handleCheckIn = async (id) => {
-  const dbRef = ref(database, `attendance/${id}`);
-  const snapshot = await get(dbRef);
-
-  console.log(snapshot);
-
-  if (snapshot.exists()) {
-    // Update the `checkIn` field to true
-    // await update(dbRef, {
-    //   checkIn: true,
-    // });
-    return "Check-in successful.";
-  } else {
-    throw new Error("Record not found.");
-  }
-};
-
-// Function to handle check-out
-export const handleCheckOut = async (id) => {
-  const dbRef = ref(database, `attendance/${id}`);
-  const snapshot = await get(dbRef);
-
-  if (snapshot.exists()) {
-    // Update the `checkOut` field to true
-    await update(dbRef, {
-      checkOut: true,
-    });
-    return "Check-out successful.";
-  } else {
-    throw new Error("Record not found.");
-  }
-};
-
 // Function to get total number of entries
 export const getTotalAttendance = async () => {
   const dbRef = ref(database);
@@ -126,4 +92,69 @@ export const getTotalAttendance = async () => {
   } else {
     return 0; // Return 0 if no data exists
   }
+};
+
+export const resetDatabase = async () => {
+  const dbRef = ref(database);
+  const snapshot = await get(child(dbRef, "/"));
+
+  console.log(snapshot);
+
+  if (snapshot.exists()) {
+    const updates = {};
+
+    snapshot.forEach((childSnapshot) => {
+      const key = childSnapshot.key;
+      // Set `checkedIn` and `checkedOut` fields to `null` to delete them
+      updates[`${key}/checkedIn`] = null;
+      updates[`${key}/checkedOut`] = null;
+    });
+
+    console.log("Updates to be made:", updates);
+
+    try {
+      await update(dbRef, updates);
+      console.log(
+        "Database reset: 'checkedIn' and 'checkedOut' fields removed."
+      );
+    } catch (error) {
+      console.error("Failed to reset database:", error);
+    }
+  } else {
+    console.log("No attendance data found to reset.");
+  }
+};
+
+const onAttendanceByThanhPhan = (thanhPhanValue, callback) => {
+  const dbRef = ref(database, "/");
+
+  onValue(dbRef, (snapshot) => {
+    if (snapshot.exists()) {
+      const attendanceData = snapshot.val();
+      const filteredAttendance = Object.values(attendanceData).filter(
+        (record) =>
+          record.ThanhPhan === thanhPhanValue && record.checkedIn === true
+      );
+      callback(filteredAttendance.length);
+    } else {
+      callback(0);
+    }
+  });
+};
+
+// Usage examples with real-time updates
+export const onAttendanceDuongNhien = (callback) => {
+  onAttendanceByThanhPhan("Đương nhiên", callback);
+};
+
+export const onAttendanceChiDinh = (callback) => {
+  onAttendanceByThanhPhan("Chỉ định", callback);
+};
+
+export const onAttendanceChinhThuc = (callback) => {
+  onAttendanceByThanhPhan("Chính thức", callback);
+};
+
+export const onAttendanceDuKhuyet = (callback) => {
+  onAttendanceByThanhPhan("Dự khuyết", callback);
 };
